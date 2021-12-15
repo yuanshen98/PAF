@@ -158,6 +158,8 @@ def score(data_path, ans_path):
             ue_score = 0
 
         u = ur_score + ue_score
+        print (sample_nam)
+        print (u)
         SCORE.append(u)
 
     score_avg = np.mean(SCORE)

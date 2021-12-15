@@ -79,8 +79,10 @@ def load_data(sample_path):
         if (note == '(AFIB') or (note == '(AFL'):
             #Change current class to 1
             current_rhythm = 1
-        else:
+        elif (note == '(N'):
             current_rhythm = 0
+        else:
+            current_rhythm = current_rhythm
 
 
         #Decenter the sample to WINDOW size if peak at start or end
@@ -96,7 +98,9 @@ def load_data(sample_path):
 
         #print (sample_wave)
         #print (sample_ann)
-
+        #sample_wave = np.nan_to_num(sample_wave)
+        #sample_wave = sample_wave-np.mean(sample_wave)
+        #sample_wave = sample_wave/np.std(sample_wave)
         tmp = np.zeros(2,)
         np.put(tmp,sample_ann, 1)
         trainset[i] = sample_wave
@@ -118,7 +122,7 @@ if __name__ == '__main__':
     #initialize trainset and traintarget
     trainset = np.zeros((1,128))
     traintarget = np.zeros((1,2))
-    #two classes, ["A", "N"]
+    #two classes, ["N", "A"]
 
     for i, sample in enumerate(test_set):
         sample_path = os.path.join(DATA_PATH, sample)
@@ -138,4 +142,4 @@ if __name__ == '__main__':
 
     #Delete the first row of train data
 
-    scipy.io.savemat('trainingset.mat', mdict={'trainset': trainset, 'traintarget': traintarget})
+    scipy.io.savemat('trainingset_normalized.mat', mdict={'trainset': trainset, 'traintarget': traintarget})
